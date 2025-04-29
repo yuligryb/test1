@@ -11,42 +11,36 @@
 </head>
 <body>
 <script>
-  const config = {
-    type: Phaser.AUTO,
-    width: 1920,
-    height: 1080,
-    backgroundColor: 0x000080, // Navy blue
-    scene: {
-      preload,
-      create
-    }
-  };
-
-  const game = new Phaser.Game(config);
-
-  function preload() {
-    this.load.atlas(
-      'bubbles',
-      'assets/sprite_sheet.png',
-      'assets/sprite_sheet.json'
-    );
+const config = {
+  type: Phaser.AUTO,
+  width: 1920,
+  height: 1080,
+  backgroundColor: 0x000080, // Navy blue
+  scene: {
+    preload,
+    create
   }
+};
 
-  function create() {
-    const frameNames = [
-      'bubble1.png', 'bubble2.png', 'bubble3.png', 'bubble4.png', 'bubble5.png',
-      'bubble6.png', 'bubble7.png', 'bubble8.png', 'bubble9.png', 'bubble10.png', 'bubble11.png'
-    ];
+const game = new Phaser.Game(config);
 
-    this.anims.create({
-      key: 'bubbleFloat',
-      frames: frameNames.map(name => ({ key: 'bubbles', frame: name })),
-      frameRate: 6,
-      repeat: -1
-    });
+function preload() {
+  this.load.spritesheet('bubbles', 'assets/sprite_sheet.png', {
+    frameWidth: 1920,
+    frameHeight: 1080
+  });
+}
 
-    this.add.sprite(960, 540, 'bubbles', 'bubble1.png').play('bubbleFloat');
-  }
+function create() {
+  this.anims.create({
+    key: 'bubbleFloat',
+    frames: this.anims.generateFrameNumbers('bubbles', { start: 0, end: 10 }),
+    frameRate: 6,
+    repeat: -1
+  });
+
+  this.add.sprite(960, 540, 'bubbles', 0).play('bubbleFloat');
+}
 </script>
 </body>
 </html>
