@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Bubble Animation (Ordered & Working)</title>
+  <title>Bubble Animation (Correct Size)</title>
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
   <style>
-    body { margin: 0; background-color: navy; }
+    body { margin: 0; background-color: navy; overflow: hidden; }
     canvas { display: block; margin: auto; }
   </style>
 </head>
@@ -15,10 +15,14 @@ const config = {
   type: Phaser.AUTO,
   width: 1920,
   height: 1080,
-  backgroundColor: 0x000080,
+  backgroundColor: 0x000080, // navy
   scene: {
     preload,
     create
+  },
+  scale: {
+    mode: Phaser.Scale.FIT,
+    autoCenter: Phaser.Scale.CENTER_BOTH
   }
 };
 
@@ -32,7 +36,7 @@ function preload() {
 }
 
 function create() {
-  // Correct frame order based on sprite_sheet.json layout
+  // Correct frame order based on how the sprites are packed
   const correctFrameOrder = [
     0, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2
   ];
@@ -42,11 +46,11 @@ function create() {
   this.anims.create({
     key: 'bubbleFloat',
     frames: frames,
-    frameRate: 6,
-    repeat: -1
+    frameRate: 6, // Adjust speed if needed
+    repeat: -1    // Loop forever
   });
 
-  const bubble = this.add.sprite(960, 540, 'bubbles').play('bubbleFloat');
+  this.add.sprite(960, 540, 'bubbles').play('bubbleFloat');
 }
 </script>
 </body>
