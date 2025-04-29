@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Bubble Animation Test</title>
+  <title>Bubble Animation (Ordered)</title>
   <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
   <style>
     body { margin: 0; background-color: navy; }
@@ -32,7 +32,20 @@ function preload() {
 }
 
 function create() {
-  const bubble = this.add.sprite(960, 540, 'bubbles', 0);
+  // These are the correct order indices for: bubble1.png to bubble11.png
+  // Based on the packing grid (4 cols × 3 rows)
+  const correctFrameOrder = [
+    0, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2
+  ];
+
+  this.anims.create({
+    key: 'bubbleFloat',
+    frames: correctFrameOrder.map(index => ({ key: 'bubbles', frame: index })),
+    frameRate: 6,
+    repeat: -1
+  });
+
+  this.add.sprite(960, 540, 'bubbles', 0).play('bubbleFloat');
 }
 </script>
 </body>
