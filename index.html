@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Bubble Animation (Sway + Locked Screen)</title>
+  <title>Bubble Animation (Sway + Slow Animation)</title>
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
   <style>
     body { margin: 0; background-color: navy; overflow: hidden; }
@@ -15,14 +15,14 @@ const config = {
   type: Phaser.AUTO,
   width: 1920,
   height: 1080,
-  backgroundColor: 0x000080, // Navy
+  backgroundColor: 0x000080,
   scene: {
     preload,
     create,
     update
   },
   scale: {
-    mode: Phaser.Scale.NONE, // LOCK screen size
+    mode: Phaser.Scale.NONE,
     autoCenter: Phaser.Scale.CENTER_BOTH
   }
 };
@@ -46,7 +46,7 @@ function create() {
   this.anims.create({
     key: 'bubbleFloat',
     frames: correctFrameOrder.map(i => ({ key: 'bubbles', frame: i })),
-    frameRate: 6,
+    frameRate: 2, // ✅ Slower! (was 6 before)
     repeat: -1
   });
 
@@ -56,8 +56,8 @@ function create() {
 let swayTime = 0;
 
 function update(time, delta) {
-  swayTime += delta * 0.001; // Accumulate time
-  bubble.x = 960 + Math.sin(swayTime) * 30; // Sway ±30 pixels
+  swayTime += delta * 0.001;
+  bubble.x = 960 + Math.sin(swayTime) * 30;
 }
 </script>
 </body>
