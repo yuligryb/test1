@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Bubble Animation (Ordered)</title>
-  <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+  <title>Bubble Animation (Ordered & Working)</title>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
   <style>
     body { margin: 0; background-color: navy; }
     canvas { display: block; margin: auto; }
@@ -32,20 +32,21 @@ function preload() {
 }
 
 function create() {
-  // These are the correct order indices for: bubble1.png to bubble11.png
-  // Based on the packing grid (4 cols × 3 rows)
+  // Correct frame order based on sprite_sheet.json layout
   const correctFrameOrder = [
     0, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2
   ];
 
+  const frames = correctFrameOrder.map(i => ({ key: 'bubbles', frame: i }));
+
   this.anims.create({
     key: 'bubbleFloat',
-    frames: correctFrameOrder.map(index => ({ key: 'bubbles', frame: index })),
+    frames: frames,
     frameRate: 6,
     repeat: -1
   });
 
-  this.add.sprite(960, 540, 'bubbles', 0).play('bubbleFloat');
+  const bubble = this.add.sprite(960, 540, 'bubbles').play('bubbleFloat');
 }
 </script>
 </body>
