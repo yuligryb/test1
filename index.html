@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Bubble Animation (Correct Size)</title>
+  <title>Bubble Animation (Sway + Locked Screen)</title>
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
   <style>
     body { margin: 0; background-color: navy; overflow: hidden; }
@@ -15,16 +15,19 @@ const config = {
   type: Phaser.AUTO,
   width: 1920,
   height: 1080,
-  backgroundColor: 0x000080, // navy
+  backgroundColor: 0x000080, // Navy
   scene: {
     preload,
-    create
+    create,
+    update
   },
   scale: {
-    mode: Phaser.Scale.FIT,
+    mode: Phaser.Scale.NONE, // LOCK screen size
     autoCenter: Phaser.Scale.CENTER_BOTH
   }
 };
+
+let bubble;
 
 const game = new Phaser.Game(config);
 
@@ -36,21 +39,25 @@ function preload() {
 }
 
 function create() {
-  // Correct frame order based on how the sprites are packed
   const correctFrameOrder = [
     0, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2
   ];
 
-  const frames = correctFrameOrder.map(i => ({ key: 'bubbles', frame: i }));
-
   this.anims.create({
     key: 'bubbleFloat',
-    frames: frames,
-    frameRate: 6, // Adjust speed if needed
-    repeat: -1    // Loop forever
+    frames: correctFrameOrder.map(i => ({ key: 'bubbles', frame: i })),
+    frameRate: 6,
+    repeat: -1
   });
 
-  this.add.sprite(960, 540, 'bubbles').play('bubbleFloat');
+  bubble = this.add.sprite(960, 540, 'bubbles').play('bubbleFloat');
+}
+
+let swayTime = 0;
+
+function update(time, delta) {
+  swayTime += delta * 0.001; // Accumulate time
+  bubble.x = 960 + Math.sin(swayTime) * 30; // Sway ±30 pixels
 }
 </script>
 </body>
