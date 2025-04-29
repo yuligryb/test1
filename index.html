@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Bubble Animation (Sway + Slow Animation)</title>
+  <title>Bubble Animation (Slower Sway + Slow Animation)</title>
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
   <style>
     body { margin: 0; background-color: navy; overflow: hidden; }
@@ -46,7 +46,7 @@ function create() {
   this.anims.create({
     key: 'bubbleFloat',
     frames: correctFrameOrder.map(i => ({ key: 'bubbles', frame: i })),
-    frameRate: 2, // ✅ Slower! (was 6 before)
+    frameRate: 2, // Slow animation frames
     repeat: -1
   });
 
@@ -56,7 +56,7 @@ function create() {
 let swayTime = 0;
 
 function update(time, delta) {
-  swayTime += delta * 0.02;
+  swayTime += delta * 0.0005; // ✅ slower sway (was 0.001)
   bubble.x = 960 + Math.sin(swayTime) * 30;
 }
 </script>
