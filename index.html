@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Bubble Animation (Slower Sway + Slow Animation)</title>
+  <title>Bubble Animation (Sway + Breathing Zoom)</title>
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
   <style>
     body { margin: 0; background-color: navy; overflow: hidden; }
@@ -32,7 +32,7 @@ let bubble;
 const game = new Phaser.Game(config);
 
 function preload() {
-  this.load.spritesheet('bubbles', 'assets/sprite_sheet.png', {
+  this.load.spritesheet('Bubble_Sheet', 'assets/Bubble_Sheet.png', {
     frameWidth: 1920,
     frameHeight: 1080
   });
@@ -45,19 +45,25 @@ function create() {
 
   this.anims.create({
     key: 'bubbleFloat',
-    frames: correctFrameOrder.map(i => ({ key: 'bubbles', frame: i })),
-    frameRate: 3, // Slow animation frames
+    frames: correctFrameOrder.map(i => ({ key: 'Bubble_Sheet', frame: i })),
+    frameRate: 2, // Slow animation frames
     repeat: -1
   });
 
-  bubble = this.add.sprite(960, 540, 'bubbles').play('bubbleFloat');
+  bubble = this.add.sprite(960, 540, 'Bubble_Sheet').play('bubbleFloat');
 }
 
 let swayTime = 0;
 
 function update(time, delta) {
-  swayTime += delta * 0.0005; // ✅ slower sway (was 0.001)
+  swayTime += delta * 0.0005; // Slow sway and breathing
+
+  // Side-to-side motion
   bubble.x = 960 + Math.sin(swayTime) * 30;
+
+  // Breathing zoom (scaling)
+  const scale = 1 + Math.sin(swayTime * 1.5) * 0.01; // Tiny breathing
+  bubble.setScale(scale);
 }
 </script>
 </body>
