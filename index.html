@@ -46,7 +46,7 @@ function create() {
   this.anims.create({
     key: 'bubbleFloat',
     frames: correctFrameOrder.map(i => ({ key: 'bubbles', frame: i })),
-    frameRate: 1, // ✅ Slower! (was 6 before)
+    frameRate: 2, // ✅ Slower! (was 6 before)
     repeat: -1
   });
 
