@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Bubble Animation (Sway + Breathing Zoom)</title>
+  <title>Bubble Animation (Background Bubbles + Breathing)</title>
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.js"></script>
   <style>
     body { margin: 0; background-color: navy; overflow: hidden; }
@@ -28,6 +28,9 @@ const config = {
 };
 
 let bubble;
+let backgroundBubbles = []; // Array for small bubbles
+let swayTime = 0;
+const maxBubbles = 30; // How many small bubbles
 
 const game = new Phaser.Game(config);
 
@@ -46,24 +49,47 @@ function create() {
   this.anims.create({
     key: 'bubbleFloat',
     frames: correctFrameOrder.map(i => ({ key: 'Bubble_Sheet', frame: i })),
-    frameRate: 2, // Slow animation frames
+    frameRate: 2, 
     repeat: -1
   });
 
   bubble = this.add.sprite(960, 540, 'Bubble_Sheet').play('bubbleFloat');
+
+  // Create small background bubbles
+  for (let i = 0; i < maxBubbles; i++) {
+    let smallBubble = this.add.circle(
+      Phaser.Math.Between(0, 1920), // random x
+      Phaser.Math.Between(1080, 2000), // start offscreen below
+      Phaser.Math.Between(5, 15), // random radius
+      0xFFFFFF,
+      0.3 // translucent white (30% opacity)
+    );
+    smallBubble.speed = Phaser.Math.FloatBetween(0.2, 0.5); // random slow speed
+    backgroundBubbles.push(smallBubble);
+  }
 }
 
-let swayTime = 0;
-
 function update(time, delta) {
-  swayTime += delta * 0.0005; // Slow sway and breathing
+  swayTime += delta * 0.0005;
 
-  // Side-to-side motion
+  // Big bubble sway
   bubble.x = 960 + Math.sin(swayTime) * 30;
 
-  // Breathing zoom (scaling)
-  const scale = 1 + Math.sin(swayTime * 1.5) * 0.01; // Tiny breathing
+  // Big bubble breathing zoom
+  const scale = 1 + Math.sin(swayTime * 1.5) * 0.01;
   bubble.setScale(scale);
+
+  // Move background bubbles upward
+  backgroundBubbles.forEach(b => {
+    b.y -= b.speed;
+    if (b.y < -50) {
+      // Reset bubble to bottom once it goes off top
+      b.x = Phaser.Math.Between(0, 1920);
+      b.y = Phaser.Math.Between(1100, 1500);
+      b.radius = Phaser.Math.Between(5, 15);
+      b.speed = Phaser.Math.FloatBetween(0.2, 0.5);
+    }
+  });
 }
 </script>
 </body>
