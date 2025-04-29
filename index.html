@@ -58,7 +58,7 @@ function create() {
   // Create transparent background bubbles with only a translucent outline
   for (let i = 0; i < maxBubbles; i++) {
     const graphics = this.add.graphics();
-    graphics.lineStyle(2, 0xFFFFFF, 0.3); // White outline, 30% opacity
+    graphics.lineStyle(4, 0xFFFFFF, 0.3); // White outline, 30% opacity
     graphics.strokeCircle(0, 0, Phaser.Math.Between(5, 15)); // Draw a circle
 
     const bubbleSprite = this.add.container(
